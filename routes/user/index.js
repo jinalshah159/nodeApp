@@ -7,20 +7,7 @@ const {
   getUserById,
   updateUserById,
   removeUserById
-} = require('../../db/route/user')
-const users = [{
-    id: 1,
-    name: 'Jinal'
-  },
-  {
-    id: 2,
-    name: 'Kinjal'
-  },
-  {
-    id: 3,
-    name: 'Jigu'
-  },
-];
+} = require('../../db/route/user');
 
 router.get('/', async (req, res) => {
   let userList = await getUser()

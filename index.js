@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan')
 
+// eslint-disable-next-line no-unused-vars
 const mongooseRef = require('./db/connection')
 const user = require('./routes/user');
 const {
@@ -17,5 +18,6 @@ if (app.get('env') === 'development') {
   startupDebugger('App is starting with morgan in development env')
 }
 
+// eslint-disable-next-line no-undef
 const port = process.env.PORT || 3000;
 app.listen(port, () => startupDebugger(`Listening on port ${port}...`));
