@@ -28,7 +28,9 @@ async function getUserById(id) {
 async function updateUserById(id, name) {
   try {
     let user = await User.findByIdAndUpdate(id, {
-      name: name
+      $set: {
+        name: name
+      }
     }, {
       new: true
     })
@@ -38,10 +40,19 @@ async function updateUserById(id, name) {
   }
 }
 
+async function removeUserById(id) {
+  try {
+    let user = await User.findByIdAndDelete(id)
+    return user;
+  } catch (ex) {
+    console.log(ex)
+  }
+}
 
 module.exports = {
   createUser,
   getUser,
   getUserById,
-  updateUserById
+  updateUserById,
+  removeUserById
 };

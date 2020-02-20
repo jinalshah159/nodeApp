@@ -5,7 +5,8 @@ const {
   getUser,
   createUser,
   getUserById,
-  updateUserById
+  updateUserById,
+  removeUserById
 } = require('../../db/route/user')
 const users = [{
     id: 1,
@@ -53,13 +54,9 @@ router.put('/:id', async (req, res) => {
   res.send(user);
 });
 
-router.delete('/:id', (req, res) => {
-  const user = users.find(c => c.id === parseInt(req.params.id));
+router.delete('/:id', async (req, res) => {
+  const user = await removeUserById(req.params.id);
   if (!user) return res.status(404).send('The user with the given ID was not found.');
-
-  const index = users.indexOf(user);
-  users.splice(index, 1);
-
   res.send(user);
 });
 

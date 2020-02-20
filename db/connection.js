@@ -5,7 +5,8 @@ const {
 
 mongoose.connect('mongodb://localhost/userapp', {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   })
   .then(() => dbDebugger('connected suceesfully'))
   .catch((err) => dbDebugger('error..', err))
