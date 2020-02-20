@@ -1,4 +1,4 @@
-let User = require('../schema/user')
+let {User} = require('../schema/user')
 async function createUser(name) {
   const user = new User({
     name: name

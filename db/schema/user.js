@@ -1,9 +1,23 @@
 let mongoose = require('../connection')
+const Joi = require('joi');
 
 const userSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    minlength: 3,
+    required: true
+  }
 })
 
 const User = mongoose.model('user', userSchema);
 
-module.exports = User;
+function validateuser(user) {
+  const schema = {
+    name: Joi.string().min(3).required()
+  };
+
+  return Joi.validate(user, schema);
+}
+
+exports.User = User;
+exports.validate = validateuser;
