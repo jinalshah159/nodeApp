@@ -1,22 +1,47 @@
 let User = require('../schema/user')
 async function createUser(name) {
-    const user = new User({
-        name: name    
-    })
-    let result = await user.save();
-    console.log(result);
-    return result;
+  const user = new User({
+    name: name
+  })
+  let result = await user.save();
+  return result;
 }
 
 async function getUser() {
-    try{
-        let user = await User.find()
-        return user;
-    } catch(ex) {
-        console.log(ex)
-    }
+  try {
+    let user = await User.find()
+    return user;
+  } catch (ex) {
+    console.log(ex)
+  }
+}
 
+async function getUserById(id) {
+  try {
+    let user = await User.findById(id)
+    return user;
+  } catch (ex) {
+    console.log(ex)
+  }
+}
+
+async function updateUserById(id, name) {
+  try {
+    let user = await User.findByIdAndUpdate(id, {
+      name: name
+    }, {
+      new: true
+    })
+    return user;
+  } catch (ex) {
+    console.log(ex)
+  }
 }
 
 
-module.exports = {createUser, getUser};
+module.exports = {
+  createUser,
+  getUser,
+  getUserById,
+  updateUserById
+};

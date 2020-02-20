@@ -3,7 +3,9 @@ const router = express.Router();
 const Joi = require('joi');
 const {
   getUser,
-  createUser
+  createUser,
+  getUserById,
+  updateUserById
 } = require('../../db/route/user')
 const users = [{
     id: 1,
@@ -24,6 +26,12 @@ router.get('/', async (req, res) => {
   res.send(userList);
 });
 
+router.get('/:id', async (req, res) => {
+  const user = await getUserById(req.params.id);
+  if (!user) return res.status(404).send('The user with the given ID was not found.');
+  res.send(user);
+});
+
 router.post('/', async (req, res) => {
   const {
     error
@@ -34,16 +42,14 @@ router.post('/', async (req, res) => {
   res.send(result);
 });
 
-router.put('/:id', (req, res) => {
-  const user = users.find(c => c.id === parseInt(req.params.id));
-  if (!user) return res.status(404).send('The user with the given ID was not found.');
-
+router.put('/:id', async (req, res) => {
   const {
     error
   } = validateuser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  user.name = req.body.name;
+  const user = await updateUserById(req.params.id, req.body.name);
+  if (!user) return res.status(404).send('The user with the given ID was not found.');
   res.send(user);
 });
 
@@ -57,11 +63,7 @@ router.delete('/:id', (req, res) => {
   res.send(user);
 });
 
-router.get('/:id', (req, res) => {
-  const user = users.find(c => c.id === parseInt(req.params.id));
-  if (!user) return res.status(404).send('The user with the given ID was not found.');
-  res.send(user);
-});
+
 
 function validateuser(user) {
   const schema = {
