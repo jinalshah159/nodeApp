@@ -1,7 +1,11 @@
-let {User} = require('../schema/user')
-async function createUser(name) {
+let {
+  User
+} = require('../schema/user')
+
+async function createUser(name, project) {
   const user = new User({
-    name: name
+    name: name,
+    project: project
   })
   let result = await user.save();
   return result;
@@ -9,7 +13,10 @@ async function createUser(name) {
 
 async function getUser() {
   try {
-    let user = await User.find()
+    let user = await User
+      .find()
+      .populate('project', 'name -_id')
+      .select('name project')
     return user;
   } catch (ex) {
     console.log(ex)

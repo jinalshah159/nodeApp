@@ -1,14 +1,15 @@
-let {Project} = require('../schema/project')
+let {
+  Project
+} = require('../schema/project')
+
 async function createProject(projectObj) {
-  try{
+  try {
     const project = new Project(projectObj)
     let result = await project.save();
-    console.log("-------",result);
     return result;
-  } catch(ex) {
+  } catch (ex) {
     console.log(ex)
   }
-  
 }
 
 async function getProject() {

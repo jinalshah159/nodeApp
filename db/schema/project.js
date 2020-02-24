@@ -1,5 +1,7 @@
 let mongoose = require('../connection')
-const Joi = require('joi');
+let uniqueValidator = require('mongoose-unique-validator');
+
+const Joi = require('@hapi/joi');
 
 const projectSchema = new mongoose.Schema({
   name: {
@@ -9,20 +11,25 @@ const projectSchema = new mongoose.Schema({
     unique: true
   },
   technologyStack: {
-    type: [String], required: true, minlength: 1,
+    type: [String],
+    required: true,
+    minlength: 1,
   },
 
 })
 
+projectSchema.plugin(uniqueValidator);
 const Project = mongoose.model('project', projectSchema);
 
 function validateproject(project) {
-  const schema = {
+  const schema = Joi.object({
     name: Joi.string().min(3).required(),
     technologyStack: Joi.array().items(Joi.string()).required().min(1)
-  };
+  }).unknown();
 
-  return Joi.validate(project, schema);
+  return schema.validate(project, {
+    abortEarly: false
+  });
 }
 
 exports.Project = Project;

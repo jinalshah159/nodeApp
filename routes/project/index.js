@@ -10,6 +10,9 @@ const {
 const {
   validate
 } = require('../../db/schema/project')
+const {
+  errorDebugger
+} = require('../../utils/debugger')
 
 router.get('/', async (req, res) => {
   let projectList = await getProject()
@@ -26,18 +29,41 @@ router.post('/', async (req, res) => {
   const {
     error
   } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  let {name, technologyStack} = req.body;
-  let result = await createProject({name, technologyStack})
-  res.send(result);
+  if (error) {
+    let err = error.details.map(e => {
+      return {
+        msg: e.message,
+        key: e.path
+      }
+    });
+    errorDebugger(err)
+    return res.status(400).send(err);
+  }
+  let {
+    name,
+    technologyStack
+  } = req.body;
+  let result = await createProject({
+    name,
+    technologyStack
+  })
+  if (result.errors) {
+    errorDebugger(result.message)
+    return res.status(400).send(result.message);
+  } else {
+    res.send(result);
+  }
 });
 
 router.put('/:id', async (req, res) => {
   const {
     error
   } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
+  if (error) {
+    let err = error.details[0].message;
+    errorDebugger(err)
+    return res.status(400).send(err);
+  }
   const project = await updateProjectById(req.params.id, req.body.name);
   if (!project) return res.status(404).send('The project with the given ID was not found.');
   res.send(project);

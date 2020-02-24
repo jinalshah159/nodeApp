@@ -6,6 +6,7 @@ const {
 mongoose.connect('mongodb://localhost/userapp', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
     useFindAndModify: false
   })
   .then(() => dbDebugger('connected suceesfully'))
