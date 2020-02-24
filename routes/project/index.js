@@ -56,14 +56,6 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const {
-    error
-  } = validate(req.body);
-  if (error) {
-    let err = error.details[0].message;
-    errorDebugger(err)
-    return res.status(400).send(err);
-  }
   const project = await updateProjectById(req.params.id, req.body.name);
   if (!project) return res.status(404).send('The project with the given ID was not found.');
   res.send(project);

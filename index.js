@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const mongooseRef = require('./db/connection')
 const user = require('./routes/user');
 const project = require('./routes/project');
+const technology = require('./routes/technology');
 
 const {
   startupDebugger
@@ -16,6 +17,7 @@ app.use(morgan('tiny'));
 
 app.use('/api/user', user);
 app.use('/api/project', project);
+app.use('/api/technology', technology)
 
 if (app.get('env') === 'development') {
   startupDebugger('App is starting with morgan in development env')
